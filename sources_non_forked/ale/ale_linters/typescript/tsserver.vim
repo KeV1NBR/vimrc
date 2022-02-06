@@ -8,11 +8,10 @@ call ale#Set('typescript_tsserver_use_global', get(g:, 'ale_use_global_executabl
 call ale#linter#Define('typescript', {
 \   'name': 'tsserver',
 \   'lsp': 'tsserver',
-\   'executable': {b -> ale#path#FindExecutable(b, 'typescript_tsserver', [
-\       '.yarn/sdks/typescript/bin/tsserver',
+\   'executable_callback': ale#node#FindExecutableFunc('typescript_tsserver', [
 \       'node_modules/.bin/tsserver',
-\   ])},
+\   ]),
 \   'command': '%e',
-\   'project_root': function('ale#handlers#tsserver#GetProjectRoot'),
+\   'project_root_callback': {-> ''},
 \   'language': '',
 \})

@@ -59,7 +59,8 @@ function! ale_linters#typescript#tslint#GetCommand(buffer) abort
     \  ? ' -r ' . ale#Escape(l:tslint_rules_dir)
     \  : ''
 
-    return ale#Escape(ale#handlers#tslint#GetExecutable(a:buffer))
+    return ale#path#BufferCdString(a:buffer)
+    \   . ale#Escape(ale#handlers#tslint#GetExecutable(a:buffer))
     \   . ' --format json'
     \   . l:tslint_config_option
     \   . l:tslint_rules_option
@@ -68,8 +69,7 @@ endfunction
 
 call ale#linter#Define('typescript', {
 \   'name': 'tslint',
-\   'executable': function('ale#handlers#tslint#GetExecutable'),
-\   'cwd': '%s:h',
-\   'command': function('ale_linters#typescript#tslint#GetCommand'),
+\   'executable_callback': 'ale#handlers#tslint#GetExecutable',
+\   'command_callback': 'ale_linters#typescript#tslint#GetCommand',
 \   'callback': 'ale_linters#typescript#tslint#Handle',
 \})

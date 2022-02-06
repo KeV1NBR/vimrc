@@ -36,7 +36,6 @@ function! s:go(...) abort
 
   let [l, r] = s:surroundings()
   let uncomment = 2
-  let force_uncomment = a:0 > 2 && a:3
   for lnum in range(lnum1,lnum2)
     let line = matchstr(getline(lnum),'\S.*\s\@<!')
     let [l, r] = s:strip_white_space(l,r,line)
@@ -45,32 +44,20 @@ function! s:go(...) abort
     endif
   endfor
 
-  if get(b:, 'commentary_startofline')
-    let indent = '^'
-  else
-    let indent = '^\s*'
-  endif
-
-  let lines = []
   for lnum in range(lnum1,lnum2)
     let line = getline(lnum)
     if strlen(r) > 2 && l.r !~# '\\'
       let line = substitute(line,
-            \'\M' . substitute(l, '\ze\S\s*$', '\\zs\\d\\*\\ze', '') . '\|' . substitute(r, '\S\zs', '\\zs\\d\\*\\ze', ''),
+            \'\M'.r[0:-2].'\zs\d\*\ze'.r[-1:-1].'\|'.l[0].'\zs\d\*\ze'.l[1:-1],
             \'\=substitute(submatch(0)+1-uncomment,"^0$\\|^-\\d*$","","")','g')
     endif
-    if force_uncomment
-      if line =~ '^\s*' . l
-        let line = substitute(line,'\S.*\s\@<!','\=submatch(0)[strlen(l):-strlen(r)-1]','')
-      endif
-    elseif uncomment
+    if uncomment
       let line = substitute(line,'\S.*\s\@<!','\=submatch(0)[strlen(l):-strlen(r)-1]','')
     else
-      let line = substitute(line,'^\%('.matchstr(getline(lnum1),indent).'\|\s*\)\zs.*\S\@<=','\=l.submatch(0).r','')
+      let line = substitute(line,'^\%('.matchstr(getline(lnum1),'^\s*').'\|\s*\)\zs.*\S\@<=','\=l.submatch(0).r','')
     endif
-    call add(lines, line)
+    call setline(lnum,line)
   endfor
-  call setline(lnum1, lines)
   let modelines = &modelines
   try
     set modelines=0
@@ -102,7 +89,7 @@ function! s:textobject(inner) abort
   endif
 endfunction
 
-command! -range -bar -bang Commentary call s:go(<line1>,<line2>,<bang>0)
+command! -range -bar Commentary call s:go(<line1>,<line2>)
 xnoremap <expr>   <Plug>Commentary     <SID>go()
 nnoremap <expr>   <Plug>Commentary     <SID>go()
 nnoremap <expr>   <Plug>CommentaryLine <SID>go() . '_'

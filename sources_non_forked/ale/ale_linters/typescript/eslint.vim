@@ -3,8 +3,7 @@
 
 call ale#linter#Define('typescript', {
 \   'name': 'eslint',
-\   'executable': function('ale#handlers#eslint#GetExecutable'),
-\   'cwd': function('ale#handlers#eslint#GetCwd'),
-\   'command': function('ale#handlers#eslint#GetCommand'),
-\   'callback': 'ale#handlers#eslint#HandleJSON',
+\   'executable_callback': 'ale#handlers#eslint#GetExecutable',
+\   'command_callback': 'ale#handlers#eslint#GetCommand',
+\   'callback': 'ale#handlers#eslint#Handle',
 \})

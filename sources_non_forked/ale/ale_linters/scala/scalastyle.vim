@@ -53,14 +53,12 @@ function! ale_linters#scala#scalastyle#GetCommand(buffer) abort
     \   'scalastyle_config.xml',
     \   'scalastyle-config.xml'
     \]
-
     for l:config in l:potential_configs
         let l:scalastyle_config = ale#path#ResolveLocalPath(
         \   a:buffer,
         \   l:config,
         \   ''
         \)
-
         if !empty(l:scalastyle_config)
             break
         endif
@@ -81,6 +79,6 @@ call ale#linter#Define('scala', {
 \   'name': 'scalastyle',
 \   'executable': 'scalastyle',
 \   'output_stream': 'stdout',
-\   'command': function('ale_linters#scala#scalastyle#GetCommand'),
+\   'command_callback': 'ale_linters#scala#scalastyle#GetCommand',
 \   'callback': 'ale_linters#scala#scalastyle#Handle',
 \})

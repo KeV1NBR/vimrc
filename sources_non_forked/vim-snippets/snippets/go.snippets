@@ -1,199 +1,204 @@
-snippet v "shorthand variable declaration"
+# shorthand variable declaration
+snippet v
 	${1} := ${2}
-
-snippet vr "variable initialization"
+# variable initialization
+snippet vr
 	var ${1:t} ${0:string}
-
-snippet var "variable declaration"
+# variable declaration
+snippet var
 	var ${1} ${2} = ${3}
-
-snippet vars "variables declaration"
+# variables declaration
+snippet vars
 	var (
 		${1} ${2} = ${3}
 	)
-
-snippet ap "append"
+# append
+snippet ap
 	append(${1:slice}, ${0:value})
-
-snippet bl "bool"
+# bool
+snippet bl
 	bool
-
-snippet bt "byte"
+# byte
+snippet bt
 	byte
-
-snippet br "break"
+# break
+snippet br
 	break
-
-snippet ch "channel"
+# channel
+snippet ch
 	chan ${0:int}
-
-snippet cs "case"
+# case
+snippet cs
 	case ${1:value}:
 		${0:${VISUAL}}
-
-snippet co "constants with iota"
+# const
+snippet c
+	const ${1:NAME} = ${0:0}
+# constants with iota
+snippet co
 	const (
 		${1:NAME1} = iota
 		${0:NAME2}
 	)
-
-snippet cn "continue"
+# continue
+snippet cn
 	continue
-
-snippet df "defer"
+# defer
+snippet df
 	defer ${0:func}()
-
-snippet dfr "defer recover"
+# defer recover
+snippet dfr
 	defer func() {
 		if err := recover(); err != nil {
 			${0:${VISUAL}}
 		}
 	}()
-
-snippet im "import"
+# int
+snippet i
+	int
+# import
+snippet im
 	import (
 		"${1:package}"
 	)
-
-snippet in "interface"
+# interface
+snippet in
 	interface{}
-
-snippet inf "full interface "
+# full interface snippet
+snippet inf
 	interface ${1:name} {
 		${2:/* methods */}
 	}
-
-snippet if "if condition"
+# if condition
+snippet if
 	if ${1:/* condition */} {
 		${2:${VISUAL}}
 	}
-
-
-snippet ife "if else condition"
+snippet ife
 	if ${1:/* condition */} {
 		${2:${VISUAL}}
 	} else {
 		${0}
 	}
-
-snippet el "else"
+# else snippet
+snippet el
 	else {
 		${0:${VISUAL}}
 	}
-
-snippet ir "if error not nil, return err"
+# error snippet
+snippet ir
 	if err != nil {
 		return err
 	}
 	${0}
-
-snippet f "false"
+# false
+snippet f
 	false
-
-snippet ft "fallthrough"
+# fallthrough
+snippet ft
 	fallthrough
-
-snippet fl "float"
+# float
+snippet fl
 	float32
-
-snippet f3 "float32"
+# float32
+snippet f3
 	float32
-
-snippet f6 "float64"
+# float64
+snippet f6
 	float64
-
-snippet for "for loop"
+# for int loop
+snippet for
 	for ${1}{
 		${0:${VISUAL}}
 	}
-
-snippet fori "for int loop"
+# for int loop
+snippet fori
 	for ${2:i} := 0; $2 < ${1:count}; $2${3:++} {
 		${0:${VISUAL}}
 	}
-
-snippet forr "for range loop"
+# for range loop
+snippet forr
 	for ${1:e} := range ${2:collection} {
 		${0:${VISUAL}}
 	}
-
-snippet fun "function"
+# function simple
+snippet fun
 	func ${1:funcName}(${2}) ${3:error} {
 		${4}
 	}
 	${0}
-
-snippet fum "method"
+# function on receiver
+snippet fum
 	func (${1:receiver} ${2:type}) ${3:funcName}(${4}) ${5:error} {
 		${6}
 	}
 	${0}
-
-snippet fumh "http handler function on receiver"
+# http handler function on reciever
+snippet fumh
 	func (${1:receiver} ${2:type}) ${3:funcName}(${4:w} http.ResponseWriter, ${5:r} *http.Request) {
 		${0:${VISUAL}}
 	}
-
-snippet lf "log printf"
+# log printf
+snippet lf
 	log.Printf("%${1:s}", ${2:var})
-
-snippet lp "log println"
+# log printf
+snippet lp
 	log.Println("${1}")
-
-snippet mk "make"
+# make
+snippet mk
 	make(${1:[]string}, ${0:0})
-
-snippet mp "map"
+# map
+snippet mp
 	map[${1:string}]${0:int}
-
-snippet main "func main()"
+# main()
+snippet main
 	func main() {
 		${1}
 	}
 	${0}
-
-snippet nw "new"
+# new
+snippet nw
 	new(${0:type})
-
-snippet pa "package"
+# package
+snippet pa
 	package ${1:main}
-
-snippet pn "panic"
+# panic
+snippet pn
 	panic("${0:msg}")
-
-snippet pf "fmt.Printf()"
+# print
+snippet pr
 	fmt.Printf("%${1:s}\n", ${2:var})
-
-snippet pl "fmt.Println()"
+# println
+snippet pl
 	fmt.Println("${1:s}")
-
-snippet rn "range"
+# range
+snippet rn
 	range ${0}
-
-snippet rt "return"
+# return
+snippet rt
 	return ${0}
-
-snippet rs "result"
+# result
+snippet rs
 	result
-
-snippet sl "select"
+# select
+snippet sl
 	select {
 	case ${1:v1} := <-${2:chan1}
 		${3}
 	default:
 		${0}
 	}
-
-snippet sr "string"
+# string
+snippet sr
 	string
-
-snippet st "struct"
+# struct
+snippet st
 	struct ${1:name} {
 		${2:/* data */}
 	}
 	${0}
-
-snippet sw "switch"
+# switch
+snippet sw
 	switch ${1:var} {
 	case ${2:value1}:
 		${3}
@@ -202,79 +207,53 @@ snippet sw "switch"
 	default:
 		${0}
 	}
-
-snippet ps "fmt.Sprintf"
+snippet sp
 	fmt.Sprintf("%${1:s}", ${2:var})
-
-snippet t "true"
+# true
+snippet t
 	true
-
-snippet g "goroutine named function"
+# goroutine named function
+snippet g
 	go ${1:funcName}(${0})
-
-snippet ga "goroutine anonymous function"
+# goroutine anonymous function
+snippet ga
 	go func(${1} ${2:type}) {
 		${3:/* code */}
 	}(${0})
-
-snippet test "test function"
+snippet test test function
 	func Test${1:name}(t *testing.T) {
 		${0:${VISUAL}}
 	}
-
-snippet testt "table test function"
-	func Test${1:name}(t *testing.T) {
-		tests := []struct {
-			name string
-		}{
-			{
-				name: "${2:test name}",
-			},
-		}
-
-		for _, test := range tests {
-			t.Run(test.name, func(t *testing.T) {
-				${0:${VISUAL}}
-			})
-		}
-	}
-
-snippet bench "benchmark function"
+snippet bench benchmark function
 	func Benchmark${1:name}(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			${2}
 		}
 	}
 	${0}
-
-snippet cl "composite literals"
+# composite literals
+snippet cl
 	type ${1:name} struct {
 		${2:attrName} ${3:attrType}
 	}
-
-snippet om "if key in a map"
+# if key in a map
+snippet om
 	if ${1:value}, ok := ${2:map}[${3:key}]; ok == true {
 		${4:/* code */}
 	}
 
-
-snippet gg "Grouped globals with anonymous struct"
+# Grouped globals with anonymous struct
+snippet gg
 	var ${1:var} = struct{
 		${2:name} ${3:type}
 	}{
 		$2: ${4:value},
 	}
 
-
-snippet ja "Marshalable json alias"
+# Marshalable json alias
+snippet ja
 	type ${1:parentType}Alias $1
 
 	func (p *$1) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&struct{ *$1Alias }{(*$1Alias)(p)})
-	}
-
-
-snippet errwr "Error handling with fmt.Errorf"
-	if ${1}err != nil {
-		return fmt.Errorf("${2} %w", err)
 	}

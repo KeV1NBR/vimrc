@@ -1,6 +1,6 @@
 " surround.vim - Surroundings
 " Author:       Tim Pope <http://tpo.pe/>
-" Version:      2.2
+" Version:      2.1
 " GetLatestVimScripts: 1697 1 :AutoInstall: surround.vim
 
 if exists("g:loaded_surround") || &cp || v:version < 700
@@ -336,16 +336,7 @@ function! s:insert(...) " {{{1
   if exists("g:surround_insert_tail")
     call setreg('"',g:surround_insert_tail,"a".getregtype('"'))
   endif
-  if &ve != 'all' && col('.') >= col('$')
-    if &ve == 'insert'
-      let extra_cols = virtcol('.') - virtcol('$')
-      if extra_cols > 0
-        let [regval,regtype] = [getreg('"',1,1),getregtype('"')]
-        call setreg('"',join(map(range(extra_cols),'" "'),''),'v')
-        norm! ""p
-        call setreg('"',regval,regtype)
-      endif
-    endif
+  if col('.') >= col('$')
     norm! ""p
   else
     norm! ""P
@@ -447,7 +438,7 @@ function! s:dosurround(...) " {{{1
     let keeper = substitute(keeper,'^\s\+','','')
     let keeper = substitute(keeper,'\s\+$','','')
   endif
-  if col("']") == col("$") && virtcol('.') + 1 == virtcol('$')
+  if col("']") == col("$") && col('.') + 1 == col('$')
     if oldhead =~# '^\s*$' && a:0 < 2
       let keeper = substitute(keeper,'\%^\n'.oldhead.'\(\s*.\{-\}\)\n\s*\%$','\1','')
     endif

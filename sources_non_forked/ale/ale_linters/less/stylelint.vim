@@ -12,9 +12,9 @@ endfunction
 
 call ale#linter#Define('less', {
 \   'name': 'stylelint',
-\   'executable': {b -> ale#path#FindExecutable(b, 'less_stylelint', [
+\   'executable_callback': ale#node#FindExecutableFunc('less_stylelint', [
 \       'node_modules/.bin/stylelint',
-\   ])},
-\   'command': function('ale_linters#less#stylelint#GetCommand'),
+\   ]),
+\   'command_callback': 'ale_linters#less#stylelint#GetCommand',
 \   'callback': 'ale#handlers#css#HandleStyleLintFormat',
 \})

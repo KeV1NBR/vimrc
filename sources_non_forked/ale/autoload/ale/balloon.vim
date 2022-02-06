@@ -2,39 +2,23 @@
 " Description: balloonexpr support for ALE.
 
 function! ale#balloon#MessageForPos(bufnr, lnum, col) abort
-    let l:set_balloons = ale#Var(a:bufnr, 'set_balloons')
-    let l:show_problems = 0
-    let l:show_hover = 0
-
-    if l:set_balloons is 1
-        let l:show_problems = 1
-        let l:show_hover = 1
-    elseif l:set_balloons is# 'hover'
-        let l:show_hover = 1
-    endif
-
     " Don't show balloons if they are disabled, or linting is disabled.
-    if !(l:show_problems || l:show_hover)
+    if !ale#Var(a:bufnr, 'set_balloons')
     \|| !g:ale_enabled
     \|| !getbufvar(a:bufnr, 'ale_enabled', 1)
         return ''
     endif
 
-    if l:show_problems
-        let l:loclist = get(g:ale_buffer_info, a:bufnr, {'loclist': []}).loclist
-        let l:index = ale#util#BinarySearch(l:loclist, a:bufnr, a:lnum, a:col)
-    endif
+    let l:loclist = get(g:ale_buffer_info, a:bufnr, {'loclist': []}).loclist
+    let l:index = ale#util#BinarySearch(l:loclist, a:bufnr, a:lnum, a:col)
 
     " Show the diagnostics message if found, 'Hover' output otherwise
-    if l:show_problems && l:index >= 0
+    if l:index >= 0
         return l:loclist[l:index].text
-    elseif l:show_hover && (
-    \   exists('*balloon_show')
-    \   || getbufvar(
-    \       a:bufnr,
-    \       'ale_set_balloons_legacy_echo',
-    \       get(g:, 'ale_set_balloons_legacy_echo', 0)
-    \   )
+    elseif exists('*balloon_show') || getbufvar(
+    \   a:bufnr,
+    \   'ale_set_balloons_legacy_echo',
+    \   get(g:, 'ale_set_balloons_legacy_echo', 0)
     \)
         " Request LSP/tsserver hover information, but only if this version of
         " Vim supports the balloon_show function, or if we turned a legacy

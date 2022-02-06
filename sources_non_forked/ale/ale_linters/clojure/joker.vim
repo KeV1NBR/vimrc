@@ -9,11 +9,9 @@ function! ale_linters#clojure#joker#HandleJokerFormat(buffer, lines) abort
 
     for l:match in ale#util#GetMatches(a:lines, l:pattern)
         let l:type = 'E'
-
         if l:match[4] is? 'Parse warning'
-            let l:type = 'W'
+          let l:type = 'W'
         endif
-
         call add(l:output, {
         \   'lnum': l:match[1] + 0,
         \   'col': l:match[2] + 0,

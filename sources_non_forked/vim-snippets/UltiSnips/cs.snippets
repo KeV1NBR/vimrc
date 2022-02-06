@@ -16,21 +16,21 @@ namespace ${1:MyNamespace}
 endsnippet
 
 snippet class "class" w
-${1:public} class ${2:`!p snip.rv = snip.basename`}
+${1:public} class ${2:MyClass}
 {
 	$0
 }
 endsnippet
 
 snippet struct "struct" w
-struct ${1:`!p snip.rv = snip.basename`}
+struct ${1:MyStruct}
 {
 	$0
 }
 endsnippet
 
 snippet interface "interface" w
-interface I${1:`!p snip.rv = snip.basename`}
+interface I${1:Interface}
 {
 	$0
 }
@@ -308,29 +308,16 @@ endsnippet
 #  methods  #
 #############
 
-snippet equals "Equality for a type" b
-public override bool Equals(object obj) => Equals(obj as ${1:TYPE});
-
-public bool Equals($1 other)  // IEquatable<$1>
+snippet equals "Equals method" b
+public override bool Equals(object obj)
 {
-	if (object.ReferenceEquals(other, null))
+	if (obj == null || GetType() != obj.GetType())
+	{
 		return false;
-	if (object.ReferenceEquals(this, other))
-		return true;
-	if (this.GetType() != other.GetType())
-		return false;
+	}
 	$0
-	return base.Equals(other);
+	return base.Equals(obj);
 }
-
-public override int GetHashCode() => base.GetHashCode();
-
-public static bool operator ==($1 x, $1 y) =>
-	(object.ReferenceEquals(x, null) && object.ReferenceEquals(y, null))
-	|| (!object.ReferenceEquals(x, null) && x.Equals(y));
-
-public static bool operator !=($1 x, $1 y) => !(x == y);
-
 endsnippet
 
 snippet mth "Method" b

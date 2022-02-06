@@ -1,9 +1,6 @@
 " Author: chocoelho <carlospecter@gmail.com>
 " Description: prospector linter python files
 
-call ale#Set('python_prospector_auto_pipenv', 0)
-call ale#Set('python_prospector_auto_poetry', 0)
-
 let g:ale_python_prospector_executable =
 \   get(g:, 'ale_python_prospector_executable', 'prospector')
 
@@ -13,23 +10,13 @@ let g:ale_python_prospector_options =
 let g:ale_python_prospector_use_global = get(g:, 'ale_python_prospector_use_global', get(g:, 'ale_use_global_executables', 0))
 
 function! ale_linters#python#prospector#GetExecutable(buffer) abort
-    if (ale#Var(a:buffer, 'python_auto_pipenv') || ale#Var(a:buffer, 'python_prospector_auto_pipenv'))
-    \ && ale#python#PipenvPresent(a:buffer)
-        return 'pipenv'
-    endif
-
-    if (ale#Var(a:buffer, 'python_auto_poetry') || ale#Var(a:buffer, 'python_prospector_auto_poetry'))
-    \ && ale#python#PoetryPresent(a:buffer)
-        return 'poetry'
-    endif
-
     return ale#python#FindExecutable(a:buffer, 'python_prospector', ['prospector'])
 endfunction
 
 function! ale_linters#python#prospector#GetCommand(buffer) abort
     let l:executable = ale_linters#python#prospector#GetExecutable(a:buffer)
 
-    let l:exec_args = l:executable =~? 'pipenv\|poetry$'
+    let l:exec_args = l:executable =~? 'pipenv$'
     \   ? ' run prospector'
     \   : ''
 
@@ -99,8 +86,8 @@ endfunction
 
 call ale#linter#Define('python', {
 \   'name': 'prospector',
-\   'executable': function('ale_linters#python#prospector#GetExecutable'),
-\   'command': function('ale_linters#python#prospector#GetCommand'),
+\   'executable_callback': 'ale_linters#python#prospector#GetExecutable',
+\   'command_callback': 'ale_linters#python#prospector#GetCommand',
 \   'callback': 'ale_linters#python#prospector#Handle',
 \   'lint_file': 1,
 \})

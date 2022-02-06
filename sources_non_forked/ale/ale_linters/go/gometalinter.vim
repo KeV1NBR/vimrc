@@ -13,12 +13,12 @@ function! ale_linters#go#gometalinter#GetCommand(buffer) abort
     " BufferCdString is used so that we can be sure the paths output from gometalinter can
     " be calculated to absolute paths in the Handler
     if l:lint_package
-        return ale#go#EnvString(a:buffer)
+        return ale#path#BufferCdString(a:buffer)
         \   . '%e'
         \   . (!empty(l:options) ? ' ' . l:options : '') . ' .'
     endif
 
-    return ale#go#EnvString(a:buffer)
+    return ale#path#BufferCdString(a:buffer)
     \   . '%e'
     \   . ' --include=' . ale#Escape(ale#util#EscapePCRE(l:filename))
     \   . (!empty(l:options) ? ' ' . l:options : '') . ' .'
@@ -50,9 +50,8 @@ endfunction
 
 call ale#linter#Define('go', {
 \   'name': 'gometalinter',
-\   'executable': {b -> ale#Var(b, 'go_gometalinter_executable')},
-\   'cwd': '%s:h',
-\   'command': function('ale_linters#go#gometalinter#GetCommand'),
+\   'executable_callback': ale#VarFunc('go_gometalinter_executable'),
+\   'command_callback': 'ale_linters#go#gometalinter#GetCommand',
 \   'callback': 'ale_linters#go#gometalinter#Handler',
 \   'lint_file': 1,
 \})

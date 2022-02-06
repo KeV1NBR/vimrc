@@ -1,8 +1,8 @@
 " @Author:      Tom Link (micathom AT gmail com?subject=[vim])
 " @Created:     2007-04-10.
-" @Last Change: 2019-04-09.
+" @Last Change: 2015-11-23.
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Revision:    836
+" @Revision:    808
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " GetLatestVimScripts: 1863 1 tlib.vim
 " tlib.vim -- Some utility functions
@@ -14,7 +14,7 @@ if v:version < 700 "{{{2
     echoerr "tlib requires Vim >= 7"
     finish
 endif
-let g:loaded_tlib = 127
+let g:loaded_tlib = 117
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -52,13 +52,13 @@ command! -nargs=+ TVarArg exec tlib#arg#Let([<args>])
 
 
 " :display: :TBrowseOutput COMMAND
-" Ever wondered how to efficiently browse the output of a command 
-" without redirecting it to a file? This command takes a command as 
-" argument and presents the output via |tlib#input#List()| so that you 
-" can easily search for a keyword (e.g. the name of a variable or 
+" Ever wondered how to efficiently browse the output of a command
+" without redirecting it to a file? This command takes a command as
+" argument and presents the output via |tlib#input#List()| so that you
+" can easily search for a keyword (e.g. the name of a variable or
 " function) and the like.
 "
-" If you press enter, the selected line will be copied to the command 
+" If you press enter, the selected line will be copied to the command
 " line. Press ESC to cancel browsing.
 "
 " EXAMPLES: >
@@ -73,53 +73,29 @@ command! -nargs=1 -complete=command TBrowseOutput call tlib#cmd#BrowseOutput(<q-
 " window. Press ESC to cancel.
 "
 " EXAMPLES: >
-"   TBrowseScriptnames 
-command! -nargs=0 TBrowseScriptnames call tlib#cmd#TBrowseScriptnames()
-
-
-" :display: :Texecqfl CMD
-" Run CMD and display the quickfix list.
-command! -nargs=1 Texecqfl <args> | call tlib#qfl#QflList(getqflist())
-
-
-" :display: :Texecloc CMD
-" Run CMD and display the quickfix list.
-command! -nargs=1 Texecloc <args> | call tlib#qfl#QflList(getloclist(0))
+"   TBrowseScriptnames
+"""command! -nargs=0 -complete=command TBrowseScriptnames call tlib#cmd#TBrowseScriptnames()
 
 
 " :display: :Tlibtrace GUARD, VAR1, VAR2...
 " Do nothing unless |tlib#trace#Enable()| was called.
-" 
+"
 " When |:Tlibtraceset| or |tlib#trace#Enable()| were called:
 "
-" If GUARD is a number that evaluates to true or if it is a string that 
-" matches a |regexp|, which was added using Tlibtrace! (with '!'), 
+" If GUARD is a number that evaluates to true or if it is a string that
+" matches a |regexp|, which was added using Tlibtrace! (with '!'),
 " display the values of VAR1, VAR2 ...
-command! -nargs=+ -bang Tlibtrace :
+command! -nargs=+ -bang -bar Tlibtrace :
 
 
-" :Tlibtraceset[!] [--file=FILE] +RX1 -RX2...
-" If |tlib#trace#Enable()| was called: With the optional <bang>, users 
+" :Tlibtraceset +RX1, -RX2...
+" If |tlib#trace#Enable()| was called: With the optional <bang>, users
 " can add and remove GUARDs (actually a |regexp|) that should be traced.
-"
-" If no `+` or `-` is prepended, assume `+`.
-"
-" With the optional bang '!', reset any options.
-command! -nargs=+ -bang Tlibtraceset call tlib#trace#Set(tlib#arg#GetOpts([<f-args>], {'short': 0}), !empty("<bang>"))
+command! -nargs=+ -bang -bar Tlibtraceset call tlib#trace#Set(<q-args>)
 
 
 " :display: :Tlibtrace ASSERTION
-command! -nargs=+ -bang Tlibassert :
-
-" :display: :Tlibtype val, 'type', ...
-command! -nargs=+ Tlibtype :
-
-
-" Browse the current |quickfix| list.
-command! -bar Tbrowseqfl call tlib#qfl#Browse()
-
-" Browse the current |location-list|.
-command! -bar Tbrowseloc call tlib#loclist#Browse()
+command! -nargs=+ -bang -bar Tlibassert :
 
 
 let &cpo = s:save_cpo

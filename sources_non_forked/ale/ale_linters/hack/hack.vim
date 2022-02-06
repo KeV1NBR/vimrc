@@ -16,7 +16,7 @@ endfunction
 call ale#linter#Define('hack', {
 \   'name': 'hack',
 \   'lsp': 'stdio',
-\   'executable': function('ale_linters#hack#hack#GetExecutable'),
+\   'executable_callback': 'ale_linters#hack#hack#GetExecutable',
 \   'command': '%e lsp --from vim-ale',
-\   'project_root': function('ale_linters#hack#hack#GetProjectRoot'),
+\   'project_root_callback': 'ale_linters#hack#hack#GetProjectRoot',
 \})

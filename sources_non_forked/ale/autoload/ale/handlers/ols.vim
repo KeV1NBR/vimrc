@@ -3,8 +3,7 @@
 
 function! ale#handlers#ols#GetExecutable(buffer) abort
     let l:ols_setting = ale#handlers#ols#GetLanguage(a:buffer) . '_ols'
-
-    return ale#path#FindExecutable(a:buffer, l:ols_setting, [
+    return ale#node#FindExecutable(a:buffer, l:ols_setting, [
     \   'node_modules/.bin/ocaml-language-server',
     \])
 endfunction

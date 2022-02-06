@@ -23,10 +23,8 @@ function! ale_linters#gitcommit#gitlint#Handle(buffer, lines) abort
     for l:match in ale#util#GetMatches(a:lines, l:pattern)
         let l:code = l:match[2]
 
-        if !ale#Var(a:buffer, 'warn_about_trailing_whitespace')
-            if l:code is# 'T2' || l:code is# 'B2'
-                continue
-            endif
+        if l:code is# 'T2' && !ale#Var(a:buffer, 'warn_about_trailing_whitespace')
+            continue
         endif
 
         let l:item = {
@@ -45,7 +43,7 @@ endfunction
 call ale#linter#Define('gitcommit', {
 \   'name': 'gitlint',
 \   'output_stream': 'stderr',
-\   'executable': function('ale_linters#gitcommit#gitlint#GetExecutable'),
-\   'command': function('ale_linters#gitcommit#gitlint#GetCommand'),
+\   'executable_callback': 'ale_linters#gitcommit#gitlint#GetExecutable',
+\   'command_callback': 'ale_linters#gitcommit#gitlint#GetCommand',
 \   'callback': 'ale_linters#gitcommit#gitlint#Handle',
 \})

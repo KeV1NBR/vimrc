@@ -7,7 +7,7 @@ function! ale#fixers#hfmt#Fix(buffer) abort
     let l:executable = ale#Var(a:buffer, 'haskell_hfmt_executable')
 
     return {
-    \   'command': ale#handlers#haskell_stack#EscapeExecutable(l:executable, 'hfmt')
+    \   'command': ale#Escape(l:executable)
     \       . ' -w'
     \       . ' %t',
     \   'read_temporary_file': 1,

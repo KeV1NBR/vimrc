@@ -38,10 +38,10 @@ endfunction
 
 call ale#linter#Define('less', {
 \   'name': 'lessc',
-\   'executable': {b -> ale#path#FindExecutable(b, 'less_lessc', [
+\   'executable_callback': ale#node#FindExecutableFunc('less_lessc', [
 \       'node_modules/.bin/lessc',
-\   ])},
-\   'command': function('ale_linters#less#lessc#GetCommand'),
+\   ]),
+\   'command_callback': 'ale_linters#less#lessc#GetCommand',
 \   'callback': 'ale_linters#less#lessc#Handle',
 \   'output_stream': 'stderr',
 \})

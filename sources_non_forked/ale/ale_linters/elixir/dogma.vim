@@ -32,7 +32,6 @@ endfunction
 call ale#linter#Define('elixir', {
 \   'name': 'dogma',
 \   'executable': 'mix',
-\   'cwd': function('ale#handlers#elixir#FindMixProjectRoot'),
 \   'command': 'mix help dogma && mix dogma %s --format=flycheck',
 \   'lint_file': 1,
 \   'callback': 'ale_linters#elixir#dogma#Handle',

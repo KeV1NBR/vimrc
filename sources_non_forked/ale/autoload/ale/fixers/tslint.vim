@@ -16,7 +16,7 @@ function! ale#fixers#tslint#Fix(buffer) abort
     return {
     \   'command': ale#node#Executable(a:buffer, l:executable)
     \       . l:tslint_config_option
-    \       . ' --outputAbsolutePaths --fix %t',
+    \       . ' --fix %t',
     \   'read_temporary_file': 1,
     \}
 endfunction

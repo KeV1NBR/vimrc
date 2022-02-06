@@ -20,12 +20,12 @@ Snippet engines supporting vim-snippets
 There are different forks of snippet engines which allow the user to insert
 snippets by typing the name of a snippet hitting the expansion mapping.
 
-- [github.com/SirVer/ultisnips][7]:
+- [github.com/SirVer/ultisnips](https://github.com/SirVer/ultisnips):   
   python, supports all snippets in this repo.
-- [github.com/garbas/vim-snipmate](https://github.com/garbas/vim-snipmate):
+- [github.com/garbas/vim-snipmate](https://github.com/garbas/vim-snipmate):   
   VimL, snipmate-snippets, engine sometimes behaves strange. Supports
   snippets/*
-- [github.com/Shougo/neosnippet](https://github.com/Shougo/neosnippet.vim):
+- [github.com/Shougo/neosnippet](https://github.com/Shougo/neosnippet.vim):   
   VimL, supports snippets/* with some configuration.
 - [github.com/drmingdrmer/xptemplate](https://github.com/drmingdrmer/xptemplate):
   Totally different syntax, does not read snippets contained in this file, but
@@ -39,16 +39,17 @@ UltiSnips has additional features such as high speed, nesting snippets,
 expanding snippets in snippets and offers powerful transformations on text in
 snippets (like visual selections or placeholder texts).
 
-Which one to use? If you have python give [SirVer/ultisnips][7] a try because
-its fast and has the most features.
+Which one to use? If you have python give
+[SirVer/ultisnips](https://github.com/SirVer/ultisnips) a try because its fast
+and has the most features.
 
 If you have VimL only (vim without python support) your best option is using
 [garbas/vim-snipmate](https://github.com/garbas/vim-snipmate) and cope with the
 minor bugs found in the engine.
 
-**Q**: Should snipMate be deprecated in favour of UltiSnips?
+Q: Should "snipMate be deprecated in favour of UltiSnips"?
 
-**A**: No, because snipMate is VimL, and UltiSnips requires Python.
+A: No, because snipMate is VimL, and UltiSnips requires Python.
 Some people want to use snippets without having to install Vim with Python
 support. Yes - this sucks.
 
@@ -82,15 +83,15 @@ For more see the UltiSnips docs (`:help UltiSnips`).
 Installation
 ------------
 
-First be aware that there are many options, see "Snippet engines" above.  Second
-be aware than there are [tons of plugin managers][8] which is why Marc Weber
-thinks that it doesn't make sense to repeat the same repetitive information
-everywhere.
+First be aware that there are many options, see "Snippet engines" above.
+Second be aware than there are [tons of plugin managers](http://vim-wiki.mawercer.de/wiki/topic/vim%20plugin%20managment.html)
+which is why Marc Weber thinks that it doesn't make sense to repeat the same
+repetitive information everywhere.
 
-The recommended way to install these snippets is by using
-[vim-addon-manager][9].  Marc Weber wrote it for exactly this reason, it
-supports simple dependency management. E.g. all you need is this line in your
-`.vimrc`:
+*Recommended way:*
+[vim-addon-manager](https://github.com/MarcWeber/vim-addon-manager) (because Marc Weber wrote it for exactly
+this reason, it supports simple dependency management). E.g. you're done by this
+line in your `.vimrc`:
 
 ```vim
 " assuming you want to use snipmate snippet engine
@@ -100,18 +101,20 @@ ActivateAddons vim-snippets snipmate
 [vim-pi](https://bitbucket.org/vimcommunity/vim-pi/issue/90/we-really-need-a-web-interface)
 Is the place to discuss plugin managers and repository resources.
 
-For snipMate installation instructions, please see [snipmate@garbas][1].
+About how to install snipMate see [snipmate@garbas](https://github.com/garbas/vim-snipmate)
 
-Pull requests adding installation instructions for Pathogen, Bundle, git clone,
-etc. are welcome and much appreciated.
+(Bundle, Pathogen, git clone - keywords to make people find this link by ctrl-f search)
+I know that I should be reading the docs of the snippet engine, just let me copy paste into my `.vimrc`:
+[See this pull request](https://github.com/honza/vim-snippets/pull/307/files).
 
-Getting help
-------------
+TROUBLE
+=======
 
-If you still have trouble getting this to work, please create a GitHub issue.
+If you still have trouble getting this to work create a GitHub ticket, ask on
+IRC or the mailing list.
 
-Things to consider when contributing
-------------------------------------
+Policies / for contributors
+---------------------------
 
 Some snippets are useful for almost all languages, so let's try to have the same
 triggers for them:
@@ -174,7 +177,7 @@ so that all users can benefit from them.  People can list their snippet reposito
 
 Installation using VAM: https://github.com/MarcWeber/vim-addon-manager
 
-Future ideas and examples
+Future - ideas - examples
 -------------------------
 
 [overview snippet engines](http://vim-wiki.mawercer.de/wiki/topic/text-snippets-skeletons-templates.html)
@@ -249,5 +252,3 @@ terms of the MIT license.
 [3]: http://github.com/garbas
 [4]: http://github.com/garbas/vim-snipmate
 [7]: http://github.com/SirVer/ultisnips
-[8]: http://vim-wiki.mawercer.de/wiki/topic/vim%20plugin%20managment.html
-[9]: https://github.com/MarcWeber/vim-addon-manager

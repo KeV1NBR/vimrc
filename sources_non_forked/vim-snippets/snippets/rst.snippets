@@ -19,17 +19,16 @@ snippet -
 	${0}
 #some directive
 snippet img:
-	.. |${1:alias}| image:: ${0:img}
+	.. |${0:alias}| image:: ${1:img}
 snippet fig:
 	.. figure:: ${1:img}
-		:alt: ${2:alter text}
+		:alt: ${0:alter text}
 
-		$0
-snippet con:
-	.. contents:: ${1:Table of Contents}
-
+		$2
+snippet cont:
+	.. contents::
 		${0:content}
-snippet cod:
+snippet code:
 	.. code:: ${1:type}
 
 		${0:write some code}
@@ -66,36 +65,34 @@ snippet tod:
 	.. todo::
 		${0}
 snippet lis:
-	.. list-table:: ${1:Title}
+	.. list-table:: ${0:Title}
 		:header-rows: 1
-		:stub-columns: 0
+		:stub-columns: 1
 
-		* - ${0:R1C1}
-		  - R1C2
-		* - R2C1
-		  - R2C2
-snippet csv:
-	.. csv-table:: ${1:Title}
-		:header-rows: 1
-		:stub-columns: 0
+		* - x1,y1
+		  - x2,y1
+		  - x3,y1
+		* - x1,y2
+		  - x2,y2
+		  - x3,y2
+		* - x1,y3
+		  - x2,y3
+		  - x3,y3
 
-		${0:R1C1}, R1C2
-		R2C1, R2C2
 snippet toc:
 	.. toctree::
 		:maxdepth: 2
 
 		${0}
 snippet dow:
-	:download:\`${1:text} <${0:path}>\`
+	:download:\`${0:text} <${1:path}>\`
 snippet ref:
-	:ref:\`${1:text} <${0:path}>\`
+	:ref:\`${0:text} <${1:path}>\`
 snippet doc:
-	:doc:\`${1:text} <${0:path}>\`
+	:doc:`${0:text} <${1:path}>`
 # CJK optimize, CJK has no space between charaters
 snippet *c
 	\ *${1:Emphasis}*\ ${0}
 snippet **c
 	\ **${1:Strong emphasis}**\ ${0}
 
-# vim:set list noet sts=0 sw=4 ts=4:

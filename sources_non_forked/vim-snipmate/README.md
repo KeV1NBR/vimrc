@@ -46,10 +46,6 @@ looking at the [vim-snippets][vim-snippets] repository.
         " Optional:
         Plugin 'honza/vim-snippets'
 
-## Using SnipMate ##
-Press <tab> and try :SnipMateOpenSnippetFiles for starting.
-Also see doc/SnipMate.txt to learn all SnipMate
-
 ## FAQ ##
 
 > SnipMate doesn't work / My snippets aren't triggering

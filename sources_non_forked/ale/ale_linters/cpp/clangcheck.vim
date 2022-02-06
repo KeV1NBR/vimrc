@@ -12,15 +12,14 @@ function! ale_linters#cpp#clangcheck#GetCommand(buffer) abort
     let l:build_dir = ale#Var(a:buffer, 'c_build_dir')
 
     if empty(l:build_dir)
-        let [l:root, l:json_file] = ale#c#FindCompileCommands(a:buffer)
-        let l:build_dir = ale#path#Dirname(l:json_file)
+        let l:build_dir = ale#path#Dirname(ale#c#FindCompileCommands(a:buffer))
     endif
 
     " The extra arguments in the command are used to prevent .plist files from
     " being generated. These are only added if no build directory can be
     " detected.
     return '%e -analyze %s'
-    \   . (empty(l:build_dir) ? ' --extra-arg=-Xclang --extra-arg=-analyzer-output=text --extra-arg=-fno-color-diagnostics': '')
+    \   . (empty(l:build_dir) ? ' -extra-arg -Xclang -extra-arg -analyzer-output=text' : '')
     \   . ale#Pad(l:user_options)
     \   . (!empty(l:build_dir) ? ' -p ' . ale#Escape(l:build_dir) : '')
 endfunction
@@ -28,8 +27,8 @@ endfunction
 call ale#linter#Define('cpp', {
 \   'name': 'clangcheck',
 \   'output_stream': 'stderr',
-\   'executable': {b -> ale#Var(b, 'cpp_clangcheck_executable')},
-\   'command': function('ale_linters#cpp#clangcheck#GetCommand'),
+\   'executable_callback': ale#VarFunc('cpp_clangcheck_executable'),
+\   'command_callback': 'ale_linters#cpp#clangcheck#GetCommand',
 \   'callback': 'ale#handlers#gcc#HandleGCCFormat',
 \   'lint_file': 1,
 \})

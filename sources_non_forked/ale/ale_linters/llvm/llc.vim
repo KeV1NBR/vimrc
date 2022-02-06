@@ -17,8 +17,8 @@ endfunction
 
 call ale#linter#Define('llvm', {
 \   'name': 'llc',
-\   'executable': {b -> ale#Var(b, 'llvm_llc_executable')},
+\   'executable_callback': ale#VarFunc('llvm_llc_executable'),
 \   'output_stream': 'stderr',
-\   'command': {-> '%e -filetype=null -o=' . g:ale#util#nul_file},
+\   'command_callback': {-> '%e -filetype=null -o=' . g:ale#util#nul_file},
 \   'callback': 'ale_linters#llvm#llc#HandleErrors',
 \})

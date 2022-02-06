@@ -1,5 +1,6 @@
 " Author: John Nduli https://github.com/jnduli
 " Description: Rstcheck for reStructuredText files
+"
 
 function! ale_linters#rst#rstcheck#Handle(buffer, lines) abort
     " matches: 'bad_rst.rst:1: (SEVERE/4) Title overline & underline
@@ -7,7 +8,6 @@ function! ale_linters#rst#rstcheck#Handle(buffer, lines) abort
     let l:pattern = '\v^(.+):(\d*): \(([a-zA-Z]*)/\d*\) (.+)$'
     let l:dir = expand('#' . a:buffer . ':p:h')
     let l:output = []
-
     for l:match in ale#util#GetMatches(a:lines, l:pattern)
         call add(l:output, {
         \   'filename': ale#path#GetAbsPath(l:dir, l:match[1]),
@@ -21,11 +21,17 @@ function! ale_linters#rst#rstcheck#Handle(buffer, lines) abort
     return l:output
 endfunction
 
+function! ale_linters#rst#rstcheck#GetCommand(buffer) abort
+    return ale#path#BufferCdString(a:buffer)
+    \   . 'rstcheck'
+    \   . ' %t'
+endfunction
+
+
 call ale#linter#Define('rst', {
 \   'name': 'rstcheck',
 \   'executable': 'rstcheck',
-\   'cwd': '%s:h',
-\   'command': 'rstcheck %t',
+\   'command_callback': 'ale_linters#rst#rstcheck#GetCommand',
 \   'callback': 'ale_linters#rst#rstcheck#Handle',
 \   'output_stream': 'both',
 \})

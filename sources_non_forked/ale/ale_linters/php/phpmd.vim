@@ -32,7 +32,7 @@ endfunction
 
 call ale#linter#Define('php', {
 \   'name': 'phpmd',
-\   'executable': {b -> ale#Var(b, 'php_phpmd_executable')},
-\   'command': function('ale_linters#php#phpmd#GetCommand'),
+\   'executable_callback': ale#VarFunc('php_phpmd_executable'),
+\   'command_callback': 'ale_linters#php#phpmd#GetCommand',
 \   'callback': 'ale_linters#php#phpmd#Handle',
 \})

@@ -11,31 +11,24 @@ let g:ale_kotlin_kotlinc_module_filename = get(g:, 'ale_kotlin_kotlinc_module_fi
 
 let s:classpath_sep = has('unix') ? ':' : ';'
 
-function! ale_linters#kotlin#kotlinc#RunWithImportPaths(buffer) abort
-    let l:command = ''
-
+function! ale_linters#kotlin#kotlinc#GetImportPaths(buffer) abort
     " exec maven/gradle only if classpath is not set
-    if !empty(ale#Var(a:buffer, 'kotlin_kotlinc_classpath'))
-        return ale_linters#kotlin#kotlinc#GetCommand(a:buffer, [], {})
+    if ale#Var(a:buffer, 'kotlin_kotlinc_classpath') isnot# ''
+        return ''
+    else
+        let l:pom_path = ale#path#FindNearestFile(a:buffer, 'pom.xml')
+        if !empty(l:pom_path) && executable('mvn')
+            return ale#path#CdString(fnamemodify(l:pom_path, ':h'))
+                        \ . 'mvn dependency:build-classpath'
+        endif
+
+        let l:classpath_command = ale#gradle#BuildClasspathCommand(a:buffer)
+        if !empty(l:classpath_command)
+            return l:classpath_command
+        endif
+
+        return ''
     endif
-
-    let [l:cwd, l:command] = ale#maven#BuildClasspathCommand(a:buffer)
-
-    " Try to use Gradle if Maven isn't available.
-    if empty(l:command)
-        let [l:cwd, l:command] = ale#gradle#BuildClasspathCommand(a:buffer)
-    endif
-
-    if empty(l:command)
-        return ale_linters#kotlin#kotlinc#GetCommand(a:buffer, [], {})
-    endif
-
-    return ale#command#Run(
-    \   a:buffer,
-    \   l:command,
-    \   function('ale_linters#kotlin#kotlinc#GetCommand'),
-    \   {'cwd': l:cwd},
-    \)
 endfunction
 
 function! s:BuildClassPathOption(buffer, import_paths) abort
@@ -51,7 +44,7 @@ function! s:BuildClassPathOption(buffer, import_paths) abort
     \   : ''
 endfunction
 
-function! ale_linters#kotlin#kotlinc#GetCommand(buffer, import_paths, meta) abort
+function! ale_linters#kotlin#kotlinc#GetCommand(buffer, import_paths) abort
     let l:kotlinc_opts = ale#Var(a:buffer, 'kotlin_kotlinc_options')
     let l:command = 'kotlinc '
 
@@ -85,13 +78,12 @@ function! ale_linters#kotlin#kotlinc#GetCommand(buffer, import_paths, meta) abor
     endif
 
     let l:fname = ''
-
     if ale#Var(a:buffer, 'kotlin_kotlinc_sourcepath') isnot# ''
         let l:fname .= expand(ale#Var(a:buffer, 'kotlin_kotlinc_sourcepath'), 1) . ' '
     else
         " Find the src directory for files in this project.
-        let l:project_root = ale#gradle#FindProjectRoot(a:buffer)
 
+        let l:project_root = ale#gradle#FindProjectRoot(a:buffer)
         if !empty(l:project_root)
             let l:src_dir = l:project_root
         else
@@ -101,7 +93,6 @@ function! ale_linters#kotlin#kotlinc#GetCommand(buffer, import_paths, meta) abor
 
         let l:fname .= expand(l:src_dir, 1) . ' '
     endif
-
     let l:fname .= ale#Escape(expand('#' . a:buffer . ':p'))
     let l:command .= l:kotlinc_opts . ' ' . l:fname
 
@@ -133,7 +124,6 @@ function! ale_linters#kotlin#kotlinc#Handle(buffer, lines) abort
         if l:buf_abspath isnot# l:curbuf_abspath
             continue
         endif
-
         let l:type_marker_str = l:type is# 'warning' ? 'W' : 'E'
 
         call add(l:output, {
@@ -170,8 +160,11 @@ endfunction
 call ale#linter#Define('kotlin', {
 \   'name': 'kotlinc',
 \   'executable': 'kotlinc',
-\   'output_stream': 'stderr',
-\   'command': function('ale_linters#kotlin#kotlinc#RunWithImportPaths'),
+\   'command_chain': [
+\       {'callback': 'ale_linters#kotlin#kotlinc#GetImportPaths', 'output_stream': 'stdout'},
+\       {'callback': 'ale_linters#kotlin#kotlinc#GetCommand', 'output_stream': 'stderr'},
+\   ],
 \   'callback': 'ale_linters#kotlin#kotlinc#Handle',
 \   'lint_file': 1,
 \})
+

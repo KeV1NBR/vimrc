@@ -3,18 +3,9 @@ priority -50
 #################################
 # Snippets for the Lua language #
 #################################
-snippet #! "#!/usr/bin/env lua" b
+snippet #! "Shebang header" b
 #!/usr/bin/env lua
 $0
-endsnippet
-
-snippet assert "Assertion" b
-assert(${1:condition}`!p
-if t[2]:
-	snip.rv = ", "
-else:
-	snip.rv = ""
-`${2:msg})
 endsnippet
 
 snippet !fun(ction)?! "New function" br

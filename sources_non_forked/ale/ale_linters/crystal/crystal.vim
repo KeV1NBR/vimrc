@@ -5,10 +5,6 @@ function! ale_linters#crystal#crystal#Handle(buffer, lines) abort
     let l:output = []
 
     for l:error in ale#util#FuzzyJSONDecode(a:lines, [])
-        if !has_key(l:error, 'file')
-            continue
-        endif
-
         call add(l:output, {
         \   'lnum': l:error.line + 0,
         \   'col': l:error.column + 0,
@@ -30,6 +26,6 @@ call ale#linter#Define('crystal', {
 \   'executable': 'crystal',
 \   'output_stream': 'both',
 \   'lint_file': 1,
-\   'command': function('ale_linters#crystal#crystal#GetCommand'),
+\   'command_callback': 'ale_linters#crystal#crystal#GetCommand',
 \   'callback': 'ale_linters#crystal#crystal#Handle',
 \})

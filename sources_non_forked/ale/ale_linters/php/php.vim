@@ -1,8 +1,6 @@
 " Author: Spencer Wood <https://github.com/scwood>, Adriaan Zonnenberg <amz@adriaan.xyz>
 " Description: This file adds support for checking PHP with php-cli
 
-call ale#Set('php_php_executable', 'php')
-
 function! ale_linters#php#php#Handle(buffer, lines) abort
     " Matches patterns like the following:
     "
@@ -32,8 +30,8 @@ endfunction
 
 call ale#linter#Define('php', {
 \   'name': 'php',
-\   'executable': {b -> ale#Var(b, 'php_php_executable')},
+\   'executable': 'php',
 \   'output_stream': 'stdout',
-\   'command': '%e -l -d error_reporting=E_ALL -d display_errors=1 -d log_errors=0 --',
+\   'command': 'php -l -d error_reporting=E_ALL -d display_errors=1 -d log_errors=0 --',
 \   'callback': 'ale_linters#php#php#Handle',
 \})

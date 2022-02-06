@@ -1,12 +1,6 @@
 " Author: Patrick Lewis - https://github.com/patricklewis, thenoseman - https://github.com/thenoseman
 " Description: haml-lint for Haml files
 
-call ale#Set('haml_hamllint_executable', 'haml-lint')
-
-function! ale_linters#haml#hamllint#GetExecutable(buffer) abort
-    return ale#Var(a:buffer, 'haml_hamllint_executable')
-endfunction
-
 function! ale_linters#haml#hamllint#GetCommand(buffer) abort
     let l:prefix = ''
 
@@ -19,7 +13,7 @@ function! ale_linters#haml#hamllint#GetCommand(buffer) abort
     " See https://github.com/brigade/haml-lint/blob/master/lib/haml_lint/linter/rubocop.rb#L89
     "     HamlLint::Linter::RuboCop#rubocop_flags
     if !empty(l:rubocop_config_file_path)
-        if has('win32')
+        if ale#Has('win32')
             let l:prefix = 'set HAML_LINT_RUBOCOP_CONF=' . ale#Escape(l:rubocop_config_file_path) . ' &&'
         else
             let l:prefix = 'HAML_LINT_RUBOCOP_CONF=' . ale#Escape(l:rubocop_config_file_path)
@@ -27,7 +21,7 @@ function! ale_linters#haml#hamllint#GetCommand(buffer) abort
     endif
 
     return (!empty(l:prefix) ? l:prefix . ' ' : '')
-    \   . ale_linters#haml#hamllint#GetExecutable(a:buffer)
+    \   . 'haml-lint'
     \   . (!empty(l:hamllint_config_file_path) ? ' --config ' . ale#Escape(l:hamllint_config_file_path) : '')
     \   . ' %t'
 endfunction
@@ -51,7 +45,7 @@ endfunction
 
 call ale#linter#Define('haml', {
 \   'name': 'hamllint',
-\   'executable': function('ale_linters#haml#hamllint#GetExecutable'),
-\   'command': function('ale_linters#haml#hamllint#GetCommand'),
+\   'executable': 'haml-lint',
+\   'command_callback': 'ale_linters#haml#hamllint#GetCommand',
 \   'callback': 'ale_linters#haml#hamllint#Handle'
 \})

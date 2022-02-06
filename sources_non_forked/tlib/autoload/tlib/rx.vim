@@ -1,7 +1,7 @@
 " @Author:      Tom Link (micathom AT gmail com?subject=[vim])
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Revision:    114
+" @Revision:    113
 
 
 " :def: function! tlib#rx#Escape(text, ?magic='m')
@@ -30,7 +30,13 @@ endf
 " Escape return |sub-replace-special|.
 function! tlib#rx#EscapeReplace(text, ...) "{{{3
     TVarArg ['magic', 'm']
-    return escape(a:text, '\&~')
+    if magic ==# 'm' || magic ==# 'v'
+        return escape(a:text, '\&~')
+    elseif magic ==# 'M' || magic ==# 'V'
+        return escape(a:text, '\')
+    else
+        echoerr 'magic must be one of: m, v, M, V'
+    endif
 endf
 
 
